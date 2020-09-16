@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Weather Station</string>
+    <string name="city_hint">Provide city name</string>
+    <string name="search">SEARCH</string>
+    <string name="current_temp">Current temperature:</string>
+    <string name="min_temp">Night</string>
+    <string name="max_temp">Day</string>
+    <string name="humidity">Humidity</string>
+    <string name="feels_like">Feels like</string>
+    <string name="invalid_input_msg">Please provide valid city name.</string>
+    <string name="no_results">Unfortunately, there were no results for given location.</string>
+    <string name="icon_link">https://developer.accuweather.com/sites/default/files/%1$s-s.png</string>
+</resources>
