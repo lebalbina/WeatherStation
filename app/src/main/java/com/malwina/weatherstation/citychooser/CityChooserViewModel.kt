@@ -8,6 +8,7 @@ import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.malwina.weatherstation.R
+import com.malwina.weatherstation.alerter.AlertsProvider
 import com.malwina.weatherstation.model.City
 import com.malwina.weatherstation.weatherapi.WeatherServiceProvider
 import com.malwina.weatherstation.weatherapi.response.toDomain
@@ -18,11 +19,12 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 class CityChooserViewModel(private val context: Application) : AndroidViewModel(context) {
-    private val weatherService = WeatherServiceProvider().getService()
+    private val weatherService = WeatherServiceProvider.getService()
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     val citiesList: MutableLiveData<List<CityItemRow>> = MutableLiveData()
     val validatedInput: MutableLiveData<Boolean> = MutableLiveData()
+    val error: MutableLiveData<Unit> = MutableLiveData()
 
     fun getMatchingCities(cityName: String) {
         compositeDisposable.add(
@@ -34,9 +36,7 @@ class CityChooserViewModel(private val context: Application) : AndroidViewModel(
                 .subscribeOn(Schedulers.computation())
                 .subscribeBy(
                     onSuccess = { citiesList.postValue(it) },
-                    onError = {
-                        Log.d("balb", "error + ${it.localizedMessage}")
-                    })
+                    onError = { error.postValue(Unit) })
         )
     }
 

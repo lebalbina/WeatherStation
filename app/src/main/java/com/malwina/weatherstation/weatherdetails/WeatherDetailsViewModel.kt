@@ -16,7 +16,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 class WeatherDetailsViewModel(private val context: Application) : AndroidViewModel(context) {
-    private val weatherService = WeatherServiceProvider().getService()
+    private val weatherService = WeatherServiceProvider.getService()
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     private val currentConditions: MutableLiveData<CurrentConditions> = MutableLiveData()

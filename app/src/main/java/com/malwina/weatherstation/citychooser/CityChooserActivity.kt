@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.malwina.weatherstation.R
+import com.malwina.weatherstation.alerter.AlertsProvider
 import com.malwina.weatherstation.databinding.CityChooserActivityBinding
 import kotlinx.android.synthetic.main.city_chooser_activity.*
 
@@ -41,6 +42,9 @@ class CityChooserActivity : AppCompatActivity() {
     private fun observeViewModel() {
         viewModel.citiesList.observe(this, Observer {
             citiesAdapter.setCities(it)
+        })
+        viewModel.error.observe(this, Observer {
+            AlertsProvider.showErrorAlert(this, getString(R.string.error), R.drawable.ic_error_outline_24px)
         })
     }
 
