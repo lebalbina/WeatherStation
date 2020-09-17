@@ -1,6 +1,7 @@
 package com.malwina.weatherstation.weatherapi.response
 
 import com.google.gson.annotations.SerializedName
+import com.malwina.weatherstation.model.City
 
 data class Location(
     @SerializedName("Version")
@@ -35,10 +36,12 @@ data class Country(
 )
 
 fun List<Location>.toDomain() : List<City> {
-    return this.map { City(
-        name = it.localizedName,
-        id = it.key,
-        country = it.country.localizedName,
-        area = it.administrativeArea.localizedName
-    ) }.toMutableList()
+    return this.map {
+        City(
+            name = it.localizedName,
+            id = it.key,
+            country = it.country.localizedName,
+            area = it.administrativeArea.localizedName
+        )
+    }
 }

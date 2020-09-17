@@ -1,6 +1,5 @@
 package com.malwina.weatherstation.citychooser
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
@@ -10,8 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.malwina.weatherstation.R
 import com.malwina.weatherstation.databinding.CityChooserActivityBinding
-import com.malwina.weatherstation.weatherapi.response.City
-import com.malwina.weatherstation.weatherdetails.WeatherDetailsActivity
 import kotlinx.android.synthetic.main.city_chooser_activity.*
 
 class CityChooserActivity : AppCompatActivity() {
@@ -22,11 +19,7 @@ class CityChooserActivity : AppCompatActivity() {
         )
     }
 
-    private val citiesAdapter: CitiesAdapter = CitiesAdapter { city: City ->
-        val intent = Intent(this@CityChooserActivity, WeatherDetailsActivity::class.java)
-        intent.putExtra(CHOSEN_CITY, city)
-        startActivity(intent)
-    }
+    private val citiesAdapter: CitiesAdapter = CitiesAdapter()
 
     private lateinit var binding: CityChooserActivityBinding
 

@@ -1,32 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cityItem"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="12dp">
+<layout>
 
-    <TextView
-        android:id="@+id/cityNameTxt"
-        android:layout_width="0dp"
+    <data>
+
+        <variable
+            name="city"
+            type="com.malwina.weatherstation.citychooser.CityItemRow" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/cityItem"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        tools:text="Warsaw" />
+        android:padding="4dp">
 
-    <TextView
-        android:id="@+id/areaTxt"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:gravity="center_horizontal"
-        tools:text="mazowieckie" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/countryTxt"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:gravity="center_horizontal"
-        tools:text="Poland" />
+            <TextView
+                android:id="@+id/cityNameTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="@{city.nameAndLocation}"
+                tools:text="Warsaw, mazowieckie" />
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/areaTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@{city.country}"
+                tools:text="Poland" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/arrowImg"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:paddingStart="24dp"
+            android:scaleType="center"
+            android:onClick="@{(view) -> city.onClick.invoke(view)}"
+            android:src="@drawable/ic_arrow_forward_24px"
+            tools:text="Poland" />
+
+    </LinearLayout>
+</layout>

@@ -1,14 +1,17 @@
 package com.malwina.weatherstation.citychooser
 
 import android.app.Application
+import android.content.Intent
 import android.text.Editable
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.malwina.weatherstation.R
+import com.malwina.weatherstation.model.City
 import com.malwina.weatherstation.weatherapi.WeatherServiceProvider
-import com.malwina.weatherstation.weatherapi.response.City
 import com.malwina.weatherstation.weatherapi.response.toDomain
+import com.malwina.weatherstation.weatherdetails.WeatherDetailsActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
@@ -18,7 +21,7 @@ class CityChooserViewModel(private val context: Application) : AndroidViewModel(
     private val weatherService = WeatherServiceProvider().getService()
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    val citiesList: MutableLiveData<List<City>> = MutableLiveData()
+    val citiesList: MutableLiveData<List<CityItemRow>> = MutableLiveData()
     val validatedInput: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getMatchingCities(cityName: String) {
@@ -26,7 +29,7 @@ class CityChooserViewModel(private val context: Application) : AndroidViewModel(
             weatherService.getLocations(
                 city = cityName,
                 apiKey = context.getString(R.string.api_key)
-            ).map { it.toDomain() }
+            ).map { it.toDomain().toCityItemRows() }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
                 .subscribeBy(
@@ -42,3 +45,23 @@ class CityChooserViewModel(private val context: Application) : AndroidViewModel(
         validatedInput.postValue(editable.matches(regex))
     }
 }
+
+fun List<City>.toCityItemRows(): List<CityItemRow> {
+    return this.map {
+        CityItemRow(
+            onClick = { view: View ->
+                val intent = Intent(view.context, WeatherDetailsActivity::class.java)
+                intent.putExtra(CityChooserActivity.CHOSEN_CITY, it)
+                view.context.startActivity(intent)
+            },
+            nameAndLocation = it.name + ", " + it.area,
+            country = it.country
+        )
+    }
+}
+
+data class CityItemRow(
+    val onClick: (view: View) -> Unit,
+    val nameAndLocation: String,
+    val country: String
+)

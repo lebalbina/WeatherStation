@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.malwina.weatherstation.R
 import com.malwina.weatherstation.citychooser.CityChooserActivity
 import com.malwina.weatherstation.databinding.WeatherDetailsActivityBinding
-import com.malwina.weatherstation.weatherapi.response.City
+import com.malwina.weatherstation.model.City
 
 class WeatherDetailsActivity : AppCompatActivity() {
     private lateinit var binding: WeatherDetailsActivityBinding

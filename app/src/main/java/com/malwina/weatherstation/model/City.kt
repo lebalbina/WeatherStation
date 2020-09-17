@@ -1,4 +1,4 @@
-package com.malwina.weatherstation.weatherapi.response
+package com.malwina.weatherstation.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
