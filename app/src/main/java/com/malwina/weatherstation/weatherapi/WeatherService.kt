@@ -13,7 +13,8 @@ interface WeatherService {
     @GET("currentconditions/v1/{locationKey}")
     fun getCurrentWeather(
         @Path("locationKey") locationKey: String,
-        @Query("apikey") apiKey: String
+        @Query("apikey") apiKey: String,
+        @Query("details") details : Boolean = true
     ): Single<List<CurrentConditionsResponse>>
 
     @GET("locations/v1/cities/autocomplete")

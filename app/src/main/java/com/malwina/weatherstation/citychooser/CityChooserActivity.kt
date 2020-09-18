@@ -44,7 +44,11 @@ class CityChooserActivity : AppCompatActivity() {
             citiesAdapter.setCities(it)
         })
         viewModel.error.observe(this, Observer {
-            AlertsProvider.showErrorAlert(this, getString(R.string.error), R.drawable.ic_error_outline_24px)
+            AlertsProvider.showErrorAlert(
+                this,
+                getString(R.string.error),
+                R.drawable.ic_error_outline_24px
+            )
         })
     }
 

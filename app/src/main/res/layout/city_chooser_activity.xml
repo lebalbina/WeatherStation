@@ -18,28 +18,97 @@
         android:padding="24dp"
         tools:context=".citychooser.CityChooserActivity">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/cityLay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/weatherTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/weather"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/stationTxt"
+                app:layout_constraintEnd_toStartOf="@+id/logoIconImg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+
+                android:id="@+id/stationTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/station"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/logoIconImg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/weatherTxt" />
+
+            <ImageView
+                android:id="@+id/logoIconImg"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_wb_sunny_24px"
+                app:layout_constraintBottom_toBottomOf="@id/stationTxt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/weatherTxt"
+                app:layout_constraintTop_toTopOf="@id/weatherTxt" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <LinearLayout
+
             android:id="@+id/cityLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:background="@drawable/edt_frame"
             android:orientation="horizontal"
             android:padding="4dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/logo">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:scaleType="center"
+                android:src="@android:drawable/ic_menu_search" />
 
             <EditText
                 android:id="@+id/cityEdt"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:afterTextChanged="@{viewModel::validateInput}"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:afterTextChanged="@{(text) -> viewModel.afterTextChanged(text)}"
                 android:background="@null"
-                android:drawableEnd="@android:drawable/ic_menu_search"
                 android:hint="@string/city_hint"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp" />
+
+            <ImageView
+                android:id="@+id/closeImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:onClick="@{() -> cityEdt.getText().clear()}"
+                android:scaleType="center"
+                android:src="@drawable/ic_close_24px"
+                android:visibility="@{viewModel.closeSearch ? View.VISIBLE : View.GONE}" />
 
         </LinearLayout>
 
@@ -87,6 +156,18 @@
             app:layout_constraintTop_toBottomOf="@id/errorTxt"
             tools:listitem="@layout/city_item"
             tools:visibility="visible" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{viewModel.loader ? View.VISIBLE : View.GONE}"
+            tools:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal" />
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

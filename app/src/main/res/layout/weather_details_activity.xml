@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.malwina.weatherstation.weatherdetails.WeatherDetailsViewModel" />
@@ -13,7 +15,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="24dp"
         tools:context=".weatherdetails.WeatherDetailsActivity">
+
+        <ImageView
+            android:id="@+id/weatherIcon"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:scaleType="centerCrop"
+            app:imageUrl="@{viewModel.weatherDetails.link}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_arrow_forward_24px" />
 
         <TextView
             android:id="@+id/cityNameTxt"
@@ -21,31 +35,19 @@
             android:layout_height="wrap_content"
             android:text="@{viewModel.cityName}"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@id/weatherIcon"
-            app:layout_constraintEnd_toStartOf="@id/weatherIcon"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:text="Warszawa" />
-
-        <ImageView
-            android:id="@+id/weatherIcon"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            app:imageUrl="@{viewModel.link}"
-            android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/cityNameTxt"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/weatherIcon"
+            tools:text="Warszawa" />
 
         <TextView
             android:id="@+id/currentTempTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.currentTemp}"
-            android:textColor="@{viewModel.color}"
-            app:layout_constraintEnd_toStartOf="@id/weatherIcon"
+            android:text="@{viewModel.weatherDetails.currentTemp}"
+            android:textColor="@{viewModel.weatherDetails.tempColor}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cityNameTxt"
             tools:text="25 stopni" />
 
@@ -83,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="4dp"
-            android:text="@{viewModel.forecast.minTemp.toString()}"
+            android:text="@{viewModel.weatherDetails.minTemp}"
             app:layout_constraintStart_toEndOf="@id/separator"
             app:layout_constraintTop_toTopOf="@id/separator"
             tools:text="35" />
@@ -93,10 +95,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="4dp"
-            android:text="@{viewModel.forecast.maxTemp.toString()}"
+            android:text="@{viewModel.weatherDetails.maxTemp}"
             app:layout_constraintStart_toEndOf="@id/separator"
             app:layout_constraintTop_toBottomOf="@id/minTempTxt"
             tools:text="12" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{viewModel.loader ? View.VISIBLE : View.GONE}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal" />
+
+        </FrameLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

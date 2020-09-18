@@ -11,4 +11,6 @@
     <string name="no_results">Unfortunately, there were no results for given location.</string>
     <string name="icon_link">https://developer.accuweather.com/sites/default/files/%1$s-s.png</string>
     <string name="error">We\'ve experienced some issues. Please try again or check your Internet connection.</string>
+    <string name="weather">Weather</string>
+    <string name="station">Station</string>
 </resources>

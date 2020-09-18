@@ -25,8 +25,18 @@ class CityChooserViewModel(private val context: Application) : AndroidViewModel(
     val citiesList: MutableLiveData<List<CityItemRow>> = MutableLiveData()
     val validatedInput: MutableLiveData<Boolean> = MutableLiveData()
     val error: MutableLiveData<Unit> = MutableLiveData()
+    val loader: MutableLiveData<Boolean> = MutableLiveData()
+    val closeSearch: MutableLiveData<Boolean> = MutableLiveData()
+
+    init {
+        validatedInput.postValue(true)
+    }
 
     fun getMatchingCities(cityName: String) {
+        if (validatedInput.value != null && validatedInput.value == false)
+            return
+
+        loader.postValue(true)
         compositeDisposable.add(
             weatherService.getLocations(
                 city = cityName,
@@ -35,14 +45,26 @@ class CityChooserViewModel(private val context: Application) : AndroidViewModel(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
                 .subscribeBy(
-                    onSuccess = { citiesList.postValue(it) },
-                    onError = { error.postValue(Unit) })
+                    onSuccess = {
+                        loader.postValue(false)
+                        citiesList.postValue(it)
+                    },
+                    onError = {
+                        loader.postValue(false)
+                        error.postValue(Unit)
+                    })
         )
     }
 
-    fun validateInput(editable: Editable) {
+    fun afterTextChanged(editable: Editable) {
         val regex = "[a-zA-Z]+[a-z]+([\\s-][a-zA-Z]+[a-z]?)*".toRegex()
-        validatedInput.postValue(editable.matches(regex))
+        validatedInput.postValue(editable.matches(regex) || editable.isEmpty())
+        closeSearch.postValue(editable.isNotEmpty())
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.clear()
     }
 }
 

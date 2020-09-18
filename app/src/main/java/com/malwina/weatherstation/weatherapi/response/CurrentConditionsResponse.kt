@@ -22,7 +22,9 @@ data class CurrentConditionsResponse(
     @SerializedName("MobileLink")
     val mobileLink: String,
     @SerializedName("Link")
-    val link: String
+    val link: String,
+    @SerializedName("RealFeelTemperature")
+    val realFeelTemperature : RealFeelTemperature
 )
 
 data class TemperatureCurrentConditions(
@@ -48,4 +50,11 @@ data class Imperial(
     val unit: String,
     @SerializedName("UnitType")
     val unitType: Int
+)
+
+data class RealFeelTemperature(
+    @SerializedName("Metric")
+    val metric: Metric,
+    @SerializedName("Imperial")
+    val imperial: Imperial
 )

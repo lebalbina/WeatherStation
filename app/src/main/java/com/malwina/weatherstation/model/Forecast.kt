@@ -10,6 +10,6 @@ data class Forecast(
 fun ForecastResponse.toDomain(): Forecast {
     return Forecast(
         minTemp = this.dailyForecasts[0].temperature.minimum.value,
-        maxTemp = this.dailyForecasts[0].temperature.minimum.value
+        maxTemp = this.dailyForecasts[0].temperature.maximum.value
     )
 }
