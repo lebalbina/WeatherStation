@@ -5,8 +5,6 @@ import com.google.gson.annotations.SerializedName
 data class CurrentConditionsResponse(
     @SerializedName("LocalObservationDateTime")
     val localObservationDateTime: String,
-    @SerializedName("EpochTime")
-    val epochTime: Long,
     @SerializedName("WeatherText")
     val weatherText: String,
     @SerializedName("WeatherIcon")
@@ -15,16 +13,12 @@ data class CurrentConditionsResponse(
     val hasPrecipitation: Boolean,
     @SerializedName("PrecipitationType")
     val precipitationType: String?,
-    @SerializedName("IsDayTime")
-    val isDayTime: Boolean,
     @SerializedName("Temperature")
     val temperature: TemperatureCurrentConditions,
-    @SerializedName("MobileLink")
-    val mobileLink: String,
-    @SerializedName("Link")
-    val link: String,
     @SerializedName("RealFeelTemperature")
-    val realFeelTemperature : RealFeelTemperature
+    val realFeelTemperature : RealFeelTemperature,
+    @SerializedName("RelativeHumidity")
+    val relativeHumidity: Int?
 )
 
 data class TemperatureCurrentConditions(

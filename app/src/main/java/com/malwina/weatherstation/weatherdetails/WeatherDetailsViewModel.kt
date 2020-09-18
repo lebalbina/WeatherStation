@@ -5,10 +5,10 @@ import android.graphics.Color
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.malwina.weatherstation.R
-import com.malwina.weatherstation.model.CurrentConditions
-import com.malwina.weatherstation.model.Forecast
-import com.malwina.weatherstation.model.toDomain
+import com.malwina.weatherstation.model.WeatherDetails
 import com.malwina.weatherstation.weatherapi.WeatherServiceProvider
+import com.malwina.weatherstation.weatherapi.response.CurrentConditionsResponse
+import com.malwina.weatherstation.weatherapi.response.ForecastResponse
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -49,21 +49,28 @@ class WeatherDetailsViewModel(private val context: Application) : AndroidViewMod
             weatherService.getCurrentWeather(cityId, apiKey),
             weatherService.getForecast(cityId, apiKey)
         ).map {
-            buildWeatherDetails(it.first.toDomain(), it.second.toDomain())
+            buildWeatherDetails(it.first.last(), it.second)
         }
     }
 
-    private fun buildWeatherDetails(currentConditions: CurrentConditions, forecast: Forecast)
-            : WeatherDetails {
+    private fun buildWeatherDetails(
+        currentConditionsResponse: CurrentConditionsResponse,
+        forecastResponse: ForecastResponse
+    ): WeatherDetails {
         return WeatherDetails(
-            minTemp = forecast.minTemp.toString() + CELSIUS_SIGN,
-            maxTemp = forecast.maxTemp.toString() + CELSIUS_SIGN,
-            currentTemp = currentConditions.currentTemp.toString() + CELSIUS_SIGN,
+            minTemp = forecastResponse.dailyForecasts.last().temperature.minimum.value.toString() + CELSIUS_SIGN,
+            maxTemp = forecastResponse.dailyForecasts.last().temperature.maximum.value.toString() + CELSIUS_SIGN,
+            currentTemp = currentConditionsResponse.temperature.metric.value.toString() + CELSIUS_SIGN,
             link = context.getString(
                 R.string.icon_link,
-                getIconNumber(currentConditions.weatherIcon)
+                getIconNumber(currentConditionsResponse.weatherIcon)
             ),
-            tempColor = selectTempColor(currentConditions.currentTemp)
+            tempColor = selectTempColor(currentConditionsResponse.temperature.metric.value),
+            weatherText = currentConditionsResponse.weatherText,
+            realFeel = currentConditionsResponse.realFeelTemperature.metric.value.toString() + CELSIUS_SIGN,
+            humidity = currentConditionsResponse.relativeHumidity,
+            hasPrecipitation = currentConditionsResponse.hasPrecipitation,
+            precipitationType = currentConditionsResponse.precipitationType
         )
     }
 
@@ -90,11 +97,3 @@ class WeatherDetailsViewModel(private val context: Application) : AndroidViewMod
         const val CELSIUS_SIGN = " \u2103"
     }
 }
-
-data class WeatherDetails(
-    val minTemp: String,
-    val maxTemp: String,
-    val currentTemp: String,
-    val link: String?,
-    val tempColor: Int
-)

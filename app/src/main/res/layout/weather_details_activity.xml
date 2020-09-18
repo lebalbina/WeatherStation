@@ -22,6 +22,7 @@
             android:id="@+id/weatherIcon"
             android:layout_width="72dp"
             android:layout_height="72dp"
+            android:layout_marginTop="24dp"
             android:scaleType="centerCrop"
             app:imageUrl="@{viewModel.weatherDetails.link}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -34,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{viewModel.cityName}"
-            android:textSize="24sp"
+            android:textSize="36sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/weatherIcon"
@@ -46,21 +47,53 @@
             android:layout_height="wrap_content"
             android:text="@{viewModel.weatherDetails.currentTemp}"
             android:textColor="@{viewModel.weatherDetails.tempColor}"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cityNameTxt"
             tools:text="25 stopni" />
 
+        <TextView
+            android:id="@+id/realFeelTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.weatherDetails.realFeel}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/realFeelLabelTxt"
+            app:layout_constraintTop_toBottomOf="@id/currentTempTxt"
+            tools:text="20 stopni" />
+
+        <TextView
+            android:id="@+id/realFeelLabelTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/real_feel_label"
+            app:layout_constraintEnd_toStartOf="@id/realFeelTxt"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/currentTempTxt"
+            tools:text="Real Feel: " />
+
+        <TextView
+            android:id="@+id/weatherTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.weatherDetails.weatherText}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/realFeelTxt"
+            tools:text="Bedzie dzisiaj bardzo ladnie i sloneczko swieci" />
+
         <View
             android:id="@+id/separator"
             android:layout_width="1dp"
             android:layout_height="0dp"
-            android:layout_marginTop="72dp"
+            android:layout_marginTop="48dp"
             android:background="@color/lightGray"
-            app:layout_constraintBottom_toBottomOf="@id/maxTempTxt"
+            app:layout_constraintBottom_toBottomOf="@id/precipitationLabelTxt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cityNameTxt" />
+            app:layout_constraintTop_toBottomOf="@+id/weatherTxt" />
 
         <TextView
             android:id="@+id/minTempLabelTxt"
@@ -79,6 +112,26 @@
             android:text="@string/max_temp"
             app:layout_constraintEnd_toStartOf="@id/separator"
             app:layout_constraintTop_toBottomOf="@id/minTempLabelTxt" />
+
+        <TextView
+            android:id="@+id/humidityLabelTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="4dp"
+            android:text="@string/humidity"
+            app:layout_constraintEnd_toStartOf="@id/separator"
+            app:layout_constraintTop_toBottomOf="@id/maxTempTxt" />
+
+        <TextView
+            android:id="@+id/precipitationLabelTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="4dp"
+            android:text="@string/precipitation"
+            android:visibility="@{viewModel.weatherDetails.hasPrecipitation ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toStartOf="@id/separator"
+            app:layout_constraintTop_toBottomOf="@id/humidityLabelTxt"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/minTempTxt"
@@ -100,13 +153,35 @@
             app:layout_constraintTop_toBottomOf="@id/minTempTxt"
             tools:text="12" />
 
+        <TextView
+            android:id="@+id/humidityTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="4dp"
+            android:text="@{viewModel.weatherDetails.humidity.toString()}"
+            app:layout_constraintStart_toEndOf="@id/separator"
+            app:layout_constraintTop_toBottomOf="@id/maxTempTxt"
+            tools:text="12" />
+
+        <TextView
+            android:id="@+id/precipitationTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="4dp"
+            android:text="@{viewModel.weatherDetails.precipitationType}"
+            android:visibility="@{viewModel.weatherDetails.hasPrecipitation ? View.VISIBLE : View.GONE}"
+            app:layout_constraintStart_toEndOf="@id/separator"
+            app:layout_constraintTop_toBottomOf="@id/humidityTxt"
+            tools:text="Pada deszczyk"
+            tools:visibility="visible" />
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="@{viewModel.loader ? View.VISIBLE : View.GONE}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible">
+            tools:visibility="gone">
 
             <ProgressBar
                 android:layout_width="wrap_content"
@@ -114,7 +189,6 @@
                 android:layout_gravity="center_vertical|center_horizontal" />
 
         </FrameLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

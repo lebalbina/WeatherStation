@@ -3,12 +3,10 @@ package com.malwina.weatherstation.citychooser
 import android.app.Application
 import android.content.Intent
 import android.text.Editable
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.malwina.weatherstation.R
-import com.malwina.weatherstation.alerter.AlertsProvider
 import com.malwina.weatherstation.model.City
 import com.malwina.weatherstation.weatherapi.WeatherServiceProvider
 import com.malwina.weatherstation.weatherapi.response.toDomain

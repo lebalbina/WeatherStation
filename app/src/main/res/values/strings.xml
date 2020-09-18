@@ -13,4 +13,6 @@
     <string name="error">We\'ve experienced some issues. Please try again or check your Internet connection.</string>
     <string name="weather">Weather</string>
     <string name="station">Station</string>
+    <string name="real_feel_label">"Real Feel: "</string>
+    <string name="precipitation">Precipitation</string>
 </resources>
