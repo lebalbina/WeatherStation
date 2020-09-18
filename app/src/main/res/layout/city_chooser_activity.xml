@@ -80,13 +80,14 @@
             app:layout_constraintTop_toBottomOf="@id/logo">
 
             <ImageView
+                android:id="@+id/loopImg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:scaleType="center"
                 android:src="@android:drawable/ic_menu_search" />
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/cityEdt"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -118,6 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="@string/invalid_input_msg"
+            android:textColor="@color/error"
             android:visibility="@{viewModel.validatedInput ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

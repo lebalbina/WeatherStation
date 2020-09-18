@@ -4,9 +4,12 @@ import android.app.Application
 import android.content.Intent
 import android.text.Editable
 import android.view.View
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.malwina.weatherstation.R
+import com.malwina.weatherstation.database.AppDatabase
+import com.malwina.weatherstation.database.recentsearch.RecentSearchData
 import com.malwina.weatherstation.model.City
 import com.malwina.weatherstation.weatherapi.WeatherServiceProvider
 import com.malwina.weatherstation.weatherapi.response.toDomain
@@ -19,15 +22,30 @@ import io.reactivex.schedulers.Schedulers
 class CityChooserViewModel(private val context: Application) : AndroidViewModel(context) {
     private val weatherService = WeatherServiceProvider.getService()
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+    private val appDatabase: AppDatabase = AppDatabase.create(context)
 
     val citiesList: MutableLiveData<List<CityItemRow>> = MutableLiveData()
     val validatedInput: MutableLiveData<Boolean> = MutableLiveData()
     val error: MutableLiveData<Unit> = MutableLiveData()
     val loader: MutableLiveData<Boolean> = MutableLiveData()
     val closeSearch: MutableLiveData<Boolean> = MutableLiveData()
+    val searchRecords: MutableLiveData<List<String>> = MutableLiveData()
 
     init {
         validatedInput.postValue(true)
+        subscribeSearchRecords()
+    }
+
+    private fun subscribeSearchRecords() {
+        compositeDisposable.add(
+            appDatabase.recentSearchDao()
+                .getRecentSearches()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.computation())
+                .map { records -> records.map { it.cityName } }
+                .subscribeBy {
+                    searchRecords.postValue(it)
+                })
     }
 
     fun getMatchingCities(cityName: String) {
@@ -35,6 +53,7 @@ class CityChooserViewModel(private val context: Application) : AndroidViewModel(
             return
 
         loader.postValue(true)
+
         compositeDisposable.add(
             weatherService.getLocations(
                 city = cityName,
@@ -51,6 +70,16 @@ class CityChooserViewModel(private val context: Application) : AndroidViewModel(
                         loader.postValue(false)
                         error.postValue(Unit)
                     })
+        )
+    }
+
+    fun saveSearch(cityName: String) {
+        compositeDisposable.add(
+            appDatabase.recentSearchDao()
+                .insertRecentSearch(RecentSearchData(cityName))
+                .observeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.computation())
+                .subscribe()
         )
     }
 

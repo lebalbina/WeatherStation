@@ -13,6 +13,7 @@
         android:id="@+id/cityItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="@{(view) -> city.onClick.invoke(view)}"
         android:padding="4dp">
 
         <LinearLayout
@@ -26,8 +27,8 @@
                 android:id="@+id/cityNameTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
                 android:text="@{city.nameAndLocation}"
+                android:textStyle="bold"
                 tools:text="Warsaw, mazowieckie" />
 
             <TextView
@@ -46,7 +47,6 @@
             android:layout_height="48dp"
             android:paddingStart="24dp"
             android:scaleType="center"
-            android:onClick="@{(view) -> city.onClick.invoke(view)}"
             android:src="@drawable/ic_arrow_forward_24px"
             tools:text="Poland" />
 

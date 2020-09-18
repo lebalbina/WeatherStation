@@ -2,6 +2,7 @@ package com.malwina.weatherstation.citychooser
 
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -50,12 +51,22 @@ class CityChooserActivity : AppCompatActivity() {
                 R.drawable.ic_error_outline_24px
             )
         })
+        viewModel.searchRecords.observe(this, Observer {
+            val adapter: ArrayAdapter<String> = ArrayAdapter(
+                this,
+                R.layout.dropdown_item,
+                it
+            )
+            binding.cityEdt.setAdapter(adapter)
+            binding.cityEdt.dropDownVerticalOffset = 12
+        })
     }
 
     private fun setSearchActionForCityEdt() {
         cityEdt.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 viewModel.getMatchingCities(cityEdt.text.toString())
+                viewModel.saveSearch(cityEdt.text.toString())
                 return@setOnEditorActionListener true
             }
             false
