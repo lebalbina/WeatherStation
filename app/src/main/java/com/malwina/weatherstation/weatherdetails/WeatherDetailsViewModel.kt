@@ -17,7 +17,6 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 class WeatherDetailsViewModel(private val context: Application) : AndroidViewModel(context) {
-    private val weatherService = WeatherServiceProvider.getService()
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     val weatherDetails: MutableLiveData<WeatherDetails> = MutableLiveData()
@@ -46,8 +45,8 @@ class WeatherDetailsViewModel(private val context: Application) : AndroidViewMod
 
     private fun getWeatherDetails(cityId: String, apiKey: String): Single<WeatherDetails> {
         return Singles.zip(
-            weatherService.getCurrentWeather(cityId, apiKey),
-            weatherService.getForecast(cityId, apiKey)
+            WeatherServiceProvider.weatherService.getCurrentWeather(cityId, apiKey),
+            WeatherServiceProvider.weatherService.getForecast(cityId, apiKey)
         ).map {
             buildWeatherDetails(it.first.last(), it.second)
         }

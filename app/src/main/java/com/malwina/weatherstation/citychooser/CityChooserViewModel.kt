@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Intent
 import android.text.Editable
 import android.view.View
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.malwina.weatherstation.R
@@ -20,7 +19,6 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 class CityChooserViewModel(private val context: Application) : AndroidViewModel(context) {
-    private val weatherService = WeatherServiceProvider.getService()
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val appDatabase: AppDatabase = AppDatabase.create(context)
 
@@ -55,7 +53,7 @@ class CityChooserViewModel(private val context: Application) : AndroidViewModel(
         loader.postValue(true)
 
         compositeDisposable.add(
-            weatherService.getLocations(
+            WeatherServiceProvider.weatherService.getLocations(
                 city = cityName,
                 apiKey = context.getString(R.string.api_key)
             ).map { it.toDomain().toCityItemRows() }
