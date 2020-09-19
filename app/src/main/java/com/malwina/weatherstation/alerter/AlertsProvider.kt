@@ -5,8 +5,8 @@ import com.malwina.weatherstation.R
 import com.tapadoo.alerter.Alert
 import com.tapadoo.alerter.Alerter
 
-object AlertsProvider : IAlertsProvider {
-    override fun showErrorAlert(activity: Activity, errorMsg: String, icon: Int) : Alert? {
+object AlertsProvider {
+    fun showErrorAlert(activity: Activity, errorMsg: String, icon: Int): Alert? {
         return Alerter.create(activity)
             .setText(errorMsg)
             .setBackgroundColorRes(R.color.error)

@@ -8,7 +8,6 @@ import com.malwina.weatherstation.database.recentsearch.RecentSearchData
 import com.malwina.weatherstation.database.recentsearch.RecentSearchDataDao
 
 @Database(entities = [RecentSearchData::class], version = 1)
-
 abstract class AppDatabase : RoomDatabase() {
     abstract fun recentSearchDao(): RecentSearchDataDao
 
